@@ -7,6 +7,7 @@ function domooc() {         //一键做题
     var count1 = 0;
     allright = true;
     $("div.m-choiceQuestion").each(function () {
+        clearWarn(this);
         count1++;
         index = md5(getProblem(this));
         arr = p['correct'][index];
@@ -27,6 +28,7 @@ function domooc() {         //一键做题
     });
     var count2 = 0;
     $("div.m-FillBlank").each(function () {
+        clearWarn(this);
         count2++;
         var problem = getProblem(this);
         var index = md5(problem);

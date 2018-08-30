@@ -13,7 +13,7 @@ function isNull(arr) {
       });
     } else if (message.action === "queryQuestionBank") {
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", "https://47.107.38.148/answers", true);
+      xhr.open("POST", "http://47.107.38.148/answers", true);
       xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;");
       xhr.onreadystatechange = function () {
           var resp={};
@@ -33,7 +33,7 @@ function isNull(arr) {
     }else if(message.action === "sendToServer"){
       console.log("sendToServer");
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", "https://47.107.38.148/answers", true);
+      xhr.open("POST", "http://47.107.38.148/answers", true);
       xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;");
       xhr.onreadystatechange = function () {
           var resp={};

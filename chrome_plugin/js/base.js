@@ -5,7 +5,6 @@ p = {                   //题库对象
 }
 var timeout = [500, 1000, 1500, 2000, 2500, 3000, 5000];    //设置各级时间间隔
 var split = ' ^ ';                      //分隔符
-var problem_index = {};                 //保存题目与index的对应关系
 var pamap_current = {};                 //保存当前的题目与选项对应关系
 var pat = /[https]{4,5}[\S]+?\.[PNGJEIFBMpngjeifbm]{3,4}/;  //抓取图片地址的正则表达式
 var k = kconst;                         //设置全对次数阀值
@@ -218,6 +217,8 @@ function qbUpload(giver, callback) {
         "correct": p["correct"],
         "wrong": p["wrong"]
     };
+    delete _p["wrong"]["undefined"];
+    delete _p["correct"]["undefined"];
     message.action = "sendToServer";
     message.courseid = _courseid;
     message.giver = giver;

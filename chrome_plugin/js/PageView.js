@@ -1,9 +1,12 @@
 function warn(ele, index) {      //当没有该题目答案时做出相应的动作 
     //alert('第' + count + '道' + ['选择题', '填空题'][index] + '无答案');
     index == 0 ? $(ele).find("input")[0].click() : 0;
+    console.log($(ele).find("div.j-title").text())
     $(ele).find("div.j-title").attr("style", "background-color: #FFD700");
 }
-
+function clearWarn(ele){
+    $(ele).find("div.j-title").attr("style", "");
+}
 var view = (function () {
     var obj = new Object();
     var 

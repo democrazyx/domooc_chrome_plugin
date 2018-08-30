@@ -1,5 +1,4 @@
 function selectAll() {
-    problem_index = {};
     pamap_current = {};
     $("div.m-choiceQuestion").each(function () {            //获得当前题目的题目选项
         var eachid = new Array();
@@ -8,23 +7,21 @@ function selectAll() {
         });
         problem = getProblem(this);
         var index = md5(problem);
-        problem_index[problem] = index;
         pamap_current[index] = eachid;
     });
     $("div.m-FillBlank").each(function () {
         problem = getProblem(this);
         var index = md5(problem);
-        problem_index[problem] = index;
-        var answer=isNull(p["correct"][index])?["no answer"]:p["correct"][index];
-            var textarea = $(this).find("textarea.j-textarea.inputtxt")[0];
-            var label = $(this).find("label.j-hint")[0];
-            label.click();
-            textarea.click();
-            textarea.focus();
-            textarea.value = answer[0];
+        var answer = isNull(p["correct"][index]) ? ["no answer"] : p["correct"][index];
+        var textarea = $(this).find("textarea.j-textarea.inputtxt")[0];
+        var label = $(this).find("label.j-hint")[0];
+        label.click();
+        textarea.click();
+        textarea.focus();
+        textarea.value = answer[0];
     });
     $("div.m-choiceQuestion").each(function () {
-        var index = problem_index[getProblem(this)];
+        var index = md5(getProblem(this));
         if (classify(this) == 1) {
             var arr = getAnswer(index, 1);
             $(this).find("div.j-choicebox ul li").each(function () {
@@ -46,30 +43,30 @@ function selectAll() {
 //在结果分析页面获取题目的正确选项
 function generateAnswers(callback) {
     repeat = [];        //记录有重复选项的题目
-    var wrongNumber=0;     //记录错题数量
+    var wrongNumber = 0;     //记录错题数量
     //console.log('getAnswers:start' + new Date().getTime())
     $("div.m-choiceQuestion").each(function (p_index) {
         //console.log('getAnswers each' + index + ' :' + new Date().getTime())
-        index = problem_index[getProblem(this)];
+        index = md5(getProblem(this));
         choiecs = getChoices(this);
         var temp = choiecs.concat();
-        var repeat_index=-1;
+        var repeat_index = -1;
         if (!!temp.repeat()) {
             console.log("第" + (p_index + 1) + "题有重复选项！");
-            repeat_index=choiecs.indexOf(temp.repeat());
-            repeat.push(repeat_index);
+            repeat_index = choiecs.indexOf(temp.repeat());
+            repeat.push(index);
         }
         if ($(this).find("span.tt2").length > 0) {
-            if(!!$(this).find("div.answrong")[0]){
+            if (!!$(this).find("div.answrong")[0] && repeat.indexOf(index) < 0) {
                 wrongNumber++;
             }
             answer_index = getAnswerIndex($(this).find("span.tt2").text());
-            if(repeat_index!=-1){           //如果有重复选项
-                if(answer_index.length>1||answer_index[0]===repeat_index+1){
-                }else{
-                    p["correct"][index] = merge(p["correct"][index], choiecs[answer_index[0]-1]);
+            if (repeat_index != -1) {           //如果有重复选项
+                if (answer_index.length > 1 || answer_index[0] === repeat_index + 1) {
+                } else {
+                    p["correct"][index] = merge(p["correct"][index], choiecs[answer_index[0] - 1]);
                     if (!isNull(p["wrong"][index])) {
-                        toArray(p["wrong"][index]).remove(answer_index[0]-1);
+                        toArray(p["wrong"][index]).remove(answer_index[0] - 1);
                     }
                 }
                 return;
@@ -88,7 +85,7 @@ function generateAnswers(callback) {
                 }
             }
         } else {
-            if ($(this).find("li.wrong").length > 0) {
+            if ($(this).find("li.wrong").length > 0 && repeat.indexOf(index) < 0) {
                 wrongNumber++;
             }
             if (classify(this) == 1) {
@@ -129,21 +126,21 @@ function generateAnswers(callback) {
         if (!!$(this).find("span.tt2")[0]) {
             var html = $(this).find("span.tt2")[0].innerHTML;
             var text = $(this).find("span.tt2")[0].innerText;
-            if(html.indexOf('<br')>-1){
-                var answer=text.split('\n');
-            }else{
-                var answer=[text];
+            if (html.indexOf('<br') > -1) {
+                var answer = text.split('\n');
+            } else {
+                var answer = [text];
             }
-            var answers=[];
+            var answers = [];
             answer.forEach(element => {
-                answers=merge(answers,element.split(" 或 "));
+                answers = merge(answers, element.split(" 或 "));
             });
-            answers=answers.reverse();
+            answers = answers.reverse();
             index = md5(getProblem(this));
-            var input=$(this).find("textarea")[0].value;
+            var input = $(this).find("textarea")[0].value;
             //console.log(answers);
-            if((isNull(p["correct"][index])||!!$(this).find("div.answrong")[0])){
-                if(!isNull(input)){
+            if ((isNull(p["correct"][index]) || !!$(this).find("div.answrong")[0])) {
+                if (!isNull(input)) {
                     wrongNumber++;
                 }
                 p["correct"][index] = answers;
@@ -160,14 +157,14 @@ function generateAnswers(callback) {
     }
     //console.log('getAnswers:complete' + new Date().getTime())
     console.log("错误数量: " + wrongNumber);
-    if(!!callback){
+    if (!!callback) {
         callback(k);
     }
     if (k <= 0) {
         k = kconst;
         console.log('finished!');
     }
-    return wrongNumber-repeat.length;
+    return wrongNumber;
 }
 var courseStart = undefined;        //课程刷题函数
 var _courseStart = function () {

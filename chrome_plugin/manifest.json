@@ -12,7 +12,7 @@
     "permissions": [
         "tabs",
         "https://www.icourse163.org/learn/*",
-        "https://47.107.38.148/*",
+        "http://47.107.38.148/*",
         "activeTab",
         "storage"
 
@@ -22,7 +22,7 @@
         "default_title": "一键答题",
         "default_popup": "popup.html"
     },
-    "homepage_url": "https://47.107.38.148/domooc",
+    "homepage_url": "http://47.107.38.148/domooc",
     "background": {
         "scripts": [
             "js/background.js"
