@@ -1,0 +1,49 @@
+{
+    "name": "Domooc",
+    "manifest_version": 2,
+    "version": "1.0.1",
+    "description": "complete mooc homework automaticlally",
+    "icons": {
+        "16": "images/domooc16.png",
+        "48": "images/domooc48.png",
+        "128": "images/domooc128.png"
+    },
+    "author": "democrazy",
+    "permissions": [
+        "tabs",
+        "https://www.icourse163.org/learn/*",
+        "https://47.107.38.148/*",
+        "activeTab",
+        "storage"
+
+    ],
+    "browser_action": {
+        "default_icon": "images/domooc64.png",
+        "default_title": "一键答题",
+        "default_popup": "popup.html"
+    },
+    "homepage_url": "https://47.107.38.148/domooc",
+    "background": {
+        "scripts": [
+            "js/background.js"
+        ],
+        "persistent": false
+    },
+    "content_scripts": [{
+        "matches": [
+            "https://www.icourse163.org/learn/*"
+        ],
+        "js": [
+            "js/jquery-3.3.1.min.js",
+            "js/md5.min.js",
+            "js/base.js",
+            "js/rush.js",
+            "js/PageView.js",
+            "js/functions.js",
+            "js/pageListener.js",
+            "js/processor.js",
+            "js/init.js"
+        ],
+        "run_at": "document_idle"
+    }]
+}

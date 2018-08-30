@@ -1,0 +1,9 @@
+[{
+    "action":"add",
+    "courseid":"courseid",
+    "jsonQB":"JSON.stringify(p)",
+    "giver":"giver"
+},{
+    "action":"get",
+    "courseid":"courseid"
+}]
