@@ -5,25 +5,31 @@ function domooc() {         //一键做题
         return;
     }
     var count1 = 0;
-    allright = true;
-    $("div.m-choiceQuestion").each(function () {
+    $("div.m-choiceQuestion").each(function (idx) {
         clearWarn(this);
+        //console.log(idx);
         count1++;
-        index = md5(getProblem(this));
-        arr = p['correct'][index];
+        var index = md5(getProblem(this));
+        var arr = p['correct'][index];
+        //console.log(arr);
         if (isNull(arr)) {
             wrongNum++;
             warn(this, 0);       //0表示选择题；
-            //console.log(index + " :" + getProblem(this));
         } else {
+            var exist=false;
             $(this).find("div.j-choicebox ul li").each(function () {
                 if (!!$(this).find("input:checked")[0]) {
                     $(this).find("input:checked")[0].click();
                 }
                 if (arr.indexOf(getChoice(this)) > -1) {
+                    exist=true;
                     $(this).find("input")[0].click();
                 }
             });
+            if(!exist){
+                wrongNum++;
+                warn(this,0);
+            }
         }
     });
     var count2 = 0;
