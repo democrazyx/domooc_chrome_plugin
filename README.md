@@ -32,3 +32,7 @@ finish your mooc homework by only clicking one button
  _课程刷题_ 需要在测验与作业页面使用 ![测验与作业](https://github.com/Demcorazy/homework/blob/master/images/testlist.png)
  
  _单元刷题_ 需要在每一单元的测验与作业页面使用 ![单元测验](https://github.com/Demcorazy/homework/blob/master/images/unitlist.png)
+ 
+ # 3.注意事项
+ 
+ ## 本插件题库由同学们自发分享，不保证准确性。此外，作业可以不做，但是该学的东西一定要掌握
