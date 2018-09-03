@@ -54,4 +54,4 @@ function isNull(arr) {
       xhr.send(JSON.stringify(data));
     }
     return true;
-  });
+  }); 
