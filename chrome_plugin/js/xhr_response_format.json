@@ -7,6 +7,6 @@
     "courseid":"courseid",
     "jsonQB":"JSON.stringify(p)",
     "giver":"giver",
-    "addedInfo":"ad",
+    "addedInfo":"htmlInfo",
     "timestamp":"time"
 }]

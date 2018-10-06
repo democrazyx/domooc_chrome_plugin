@@ -1,3 +1,8 @@
+function filter(_str){
+    var ptn = /<script>|<\/script>/ig;
+    var str = _str.replace(ptn,'');
+    return str.slice(0,12);
+  }
 var courseid_pat = /learn\/([\S]+?)\/learn/;
 var _courseid;                  //保存当前的courseid
 chrome.runtime.sendMessage({ action: "queryUrl" }, (response) => {
@@ -15,8 +20,9 @@ var courseInterval = 0;
             chrome.runtime.sendMessage({ action: "queryQuestionBank", courseid: _courseid }, (response) => {
                 if (response.success) {
                     p = JSON.parse(response.jsonQB);
-                    p.giver = response.giver;
+                    p.giver = filter(response.giver);
                     p.timestamp = response.timestamp;
+                    p.add=response.addedInfo;
                     state.qbchecked = true;
                 } else {
                     state.qbchecked = false;

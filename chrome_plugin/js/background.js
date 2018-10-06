@@ -6,12 +6,12 @@ function isNull(arr) {
   }
   //监听前端页面发来的消息
   chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    if (message.action === "queryUrl") {
+    if (message.action === "queryUrl") {                //返回当前URL
       chrome.tabs.query({ active: true }, function (tabs) {
         console.log(tabs[0].url);
         sendResponse(tabs[0]);
       });
-    } else if (message.action === "queryQuestionBank") {
+    } else if (message.action === "queryQuestionBank") {    //获取题库
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "http://47.107.38.148/answers", true);
       xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded;");
@@ -30,7 +30,7 @@ function isNull(arr) {
         "courseid":message.courseid
       };
       xhr.send(JSON.stringify(data));
-    }else if(message.action === "sendToServer"){
+    }else if(message.action === "sendToServer"){      //发送题库到服务器
       console.log("sendToServer");
       var xhr = new XMLHttpRequest();
       xhr.open("POST", "http://47.107.38.148/answers", true);

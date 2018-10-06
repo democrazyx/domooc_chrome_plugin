@@ -1,7 +1,7 @@
 {
     "name": "Domooc",
     "manifest_version": 2,
-    "version": "1.0.1",
+    "version": "1.0.0",
     "description": "complete mooc homework automaticlally",
     "icons": {
         "16": "images/domooc16.png",
@@ -12,7 +12,6 @@
     "permissions": [
         "tabs",
         "https://www.icourse163.org/learn/*",
-        "http://47.107.38.148/*",
         "activeTab",
         "storage"
 
@@ -29,6 +28,7 @@
         ],
         "persistent": false
     },
+    "update_url":"http://47.107.38.148/domooc/updates.xml",
     "content_scripts": [{
         "matches": [
             "https://www.icourse163.org/learn/*"
@@ -38,7 +38,7 @@
             "js/md5.min.js",
             "js/base.js",
             "js/rush.js",
-            "js/PageView.js",
+            "js/pageView.js",
             "js/functions.js",
             "js/pageListener.js",
             "js/processor.js",

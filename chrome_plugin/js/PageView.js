@@ -12,8 +12,9 @@ var view = (function () {
     var 
     selectors = ["h2.f-fl.j-moduleName", "h2.j-title.f-fl"];
     obj._showExist = function (selector) {
-        $(selector).after("<h4 class='j-title' id='timestamp' style='margin: 0 15px 0 15px;color:black;'>&nbsp;&nbsp;&nbsp;上次更新时间为 " + p.timestamp + " </h4>");
-        $(selector).after("<h4 class='j-title' id='giver' style='margin: 0 15px 0 15px;color:black;'>&nbsp;&nbsp;&nbsp;本测验题库由 " + (isNull(p.giver) ? getName() : p.giver) + " 提供</h4>");
+        $(selector).after("<h4 class='j-title' id='timestamp' style='margin: 0 15px 0 15px;color:black;'>&nbsp;&nbsp;&nbsp;上次更新时间为 " + HtmlUtil.htmlEncode(p.timestamp) + " </h4>");
+        $(selector).after("<h4 class='j-title' id='giver' style='margin: 0 15px 0 15px;color:black;'>&nbsp;&nbsp;&nbsp;本测验题库由 " + HtmlUtil.htmlEncode(isNull(p.giver) ? getName() : p.giver) + " 提供</h4>");
+        $(selector).after(isNull(p.add)?'':p.add);
     };
     obj._showNotExist = function (selector) {
         $(selector).after("<h2 class='j-title' id='qb_check_fail' style='margin: 0 15px 0 15px;color:red;'>&nbsp;&nbsp;&nbsp;暂无对应题库，您可以自行用小号刷题获取题库</h2>");
@@ -71,7 +72,7 @@ var view = (function () {
             $("div#upload span").css("color", "");
             $("div#upload").show();
             $("div#giver_submit").click(function () {
-                var giver = $("textarea#giver_text").val();
+                var giver = $("textarea#giver_text").val().slice(0,120);
                 qbUpload(giver, function (response) {
                     if (!response || !response.success) {
                         $("div#upload span").text(details[2]);      //上传失败
