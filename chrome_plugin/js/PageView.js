@@ -12,9 +12,9 @@ var view = (function () {
     var 
     selectors = ["h2.f-fl.j-moduleName", "h2.j-title.f-fl"];
     obj._showExist = function (selector) {
+        $("div.u-learn-moduletitle.f-cb").after(isNull(p.addedInfo)?'':p.addedInfo);
         $(selector).after("<h4 class='j-title' id='timestamp' style='margin: 0 15px 0 15px;color:black;'>&nbsp;&nbsp;&nbsp;上次更新时间为 " + HtmlUtil.htmlEncode(p.timestamp) + " </h4>");
         $(selector).after("<h4 class='j-title' id='giver' style='margin: 0 15px 0 15px;color:black;'>&nbsp;&nbsp;&nbsp;本测验题库由 " + HtmlUtil.htmlEncode(isNull(p.giver) ? getName() : p.giver) + " 提供</h4>");
-        $(selector).after(isNull(p.add)?'':p.add);
     };
     obj._showNotExist = function (selector) {
         $(selector).after("<h2 class='j-title' id='qb_check_fail' style='margin: 0 15px 0 15px;color:red;'>&nbsp;&nbsp;&nbsp;暂无对应题库，您可以自行用小号刷题获取题库</h2>");
@@ -62,10 +62,10 @@ var view = (function () {
         $("#domooc").hide();
     };
     obj.showUpload = function () {
-        var details=["检测到答案有错误，若要修正题库造福其他同学，请在下方输入框中输入您的昵称（不超过25字）并提交","若要分享题库造福其他同学，请在下方输入框中输入您的昵称（不超过25字）并提交","上传失败！请关闭当前标签页后重试","上传成功！感谢您的参与，请刷新以获取您的题库信息，本信息将在五秒后消失"];
+        var details=["检测到答案有错误，若要修正题库造福其他同学，请在下方输入框中输入您的昵称（不超过25字符）并提交","若要分享题库造福其他同学，请在下方输入框中输入您的昵称（不超过25字）并提交","上传失败！请关闭当前标签页后重试","上传成功！感谢您的参与，请刷新以获取您的题库信息，本信息将在五秒后消失"];
         if (!!$("div.g-mn1c.m-learnbox")[0]) {
             if (!$("div#upload")[0]) {
-                var giver_name = getName();
+                var giver_name = getWebUser().nickName;
                 $("div.g-mn1c.m-learnbox").prepend("<div id='upload' style='display:none'><div class='empty j-empty' id='upload' style='margin-top:10px;padding-top:5px;' ><span class='f-f0 f-fl' style='display:inline'>若要分享题库造福其他同学，请在下方输入框中输入您的昵称（不超过25字）</span></div><div class='u-baseinputui' style='width: 250px; height: 35px;'><textarea id='giver_text' class='j-textarea inputtxt' value='" + giver_name + "' cols='25'>" + giver_name + "</textarea></div><div class='f-fl u-btn u-btn-whiteGreen' id='giver_submit' style='margin: 15px 0px 20px 0px;margin-right:100%'>提交</div></div>");
             }
             $("div#upload span").text(details[state.mode-1]);
@@ -88,8 +88,5 @@ var view = (function () {
             });
         }
     };
-    obj.showStop=function(){
-        
-    }
     return obj;
 })();

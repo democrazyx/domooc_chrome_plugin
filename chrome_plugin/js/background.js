@@ -27,7 +27,8 @@ function isNull(arr) {
       }
       var data={
         "action":"get",
-        "courseid":message.courseid
+        "courseid":message.courseid,
+        "user" :message.user
       };
       xhr.send(JSON.stringify(data));
     }else if(message.action === "sendToServer"){      //发送题库到服务器
@@ -49,7 +50,9 @@ function isNull(arr) {
         "action":"add",
         "courseid":message.courseid,
         "jsonQB":message.jsonQB,
-        "giver":isNull(message.giver)?"不愿透露姓名的Z同学":message.giver
+        "giver":isNull(message.giver)?"不愿透露姓名的Z同学":message.giver,
+        "giverid": message.giverid,
+        "curlength": message.curlength
       }
       xhr.send(JSON.stringify(data));
     }

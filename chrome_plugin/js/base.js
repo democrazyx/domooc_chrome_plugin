@@ -222,11 +222,27 @@ function qbUpload(giver, callback) {
     message.action = "sendToServer";
     message.courseid = _courseid;
     message.giver = giver;
+    message.giverid = getWebUser().id;
+    message.curlength = Object.getOwnPropertyNames(_p.correct).length+Object.getOwnPropertyNames(_p.wrong).length;
     message.jsonQB = JSON.stringify(_p);
     chrome.runtime.sendMessage(message, (response) => {
         callback(response);
     });
 }
+var getWebUser = (function () {
+    let _window;
+    return function () {
+        if (!_window) {
+            let js = document.createElement('script');
+            js.setAttribute("type", "text/javascript");
+            js.text = 'var div=document.createElement("div");div.setAttribute("id","getWindow");div.setAttribute("style","dislpay:none");div.innerText=JSON.stringify(window.webUser);document.getElementsByTagName("body")[0].appendChild(div);';
+            document.getElementsByTagName("head")[0].appendChild(js);
+            let text = document.getElementById("getWindow").innerText;
+            _window = JSON.parse(text);
+        }
+        return _window;
+    }
+})();
 var HtmlUtil = {
     /*1.用浏览器内部转换器实现html转码*/
     htmlEncode:function (html){

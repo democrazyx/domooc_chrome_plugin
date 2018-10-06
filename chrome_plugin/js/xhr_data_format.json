@@ -2,8 +2,11 @@
     "action":"add",
     "courseid":"courseid",
     "jsonQB":"JSON.stringify(p)",
-    "giver":"giver"
+    "giver":"giver",
+    "giverid":"giverid",
+    "curlength":"current length"
 },{
     "action":"get",
-    "courseid":"courseid"
+    "courseid":"courseid",
+    "user":"JSON.stringify(getWebUsrer())"
 }]
