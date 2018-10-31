@@ -24,14 +24,14 @@ function selectAll() {
         var index = md5(getProblem(this));
         if (classify(this) == 1) {
             var arr = getAnswer(index, 1);
-            $(this).find("div.j-choicebox ul li").each(function () {
+            $(this).find("div.j-choicebox ul>li").each(function () {
                 if (arr.indexOf(getChoice(this)) > -1) {
                     $(this).find("input")[0].click();
                 }
             });
         } else {
             var arr = getAnswer(index, 2);
-            $(this).find("div.j-choicebox ul li").each(function () {
+            $(this).find("div.j-choicebox ul>li").each(function () {
                 if (arr.indexOf(getChoice(this)) > -1) {
                     $(this).find("input")[0].click();
                 }

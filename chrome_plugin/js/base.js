@@ -43,6 +43,12 @@ function getAnswerIndex(answer_text) {
         case 'C、D': return [3, 4];
     }
 }
+String.prototype.trim = function () { return this.replace(/\s+/g, ""); };
+String.prototype.format = function(){
+    var regx = /<[img ]{3,}[\S]+?[https]{3,4}:\/\/([\S]+?\.[pngjeifbm]{3,4})[\S]+?>/gi;
+    var regx2=/\<[^\<\>]+?\>/ig;
+    return HtmlUtil.htmlDecode(this).trim().replace(regx,"$1").replace(regx2,"");
+}
 Array.prototype.remove = function (val) {
     var index = this.indexOf(val);
     while (index > -1) {
@@ -73,6 +79,9 @@ Array.prototype.repeat = function () {      //返回第一个重复元素
     }
     return null;
 };
+function md5(str){
+    return str;
+}
 //判断对象是否为空
 function isNull(ele) {
     if (ele === undefined || ele === null || ele === false || (typeof(ele)==="string"?ele.trim()==="":0)) {
@@ -89,22 +98,13 @@ function getName(){
 }
 //获取选项字符串
 function getChoice(ele) {
-    var temp = '';
-    if ($(ele).find("img").length > 0) {
-        $(ele).find("img").each(function () {
-            temp = temp+split+pat.exec($(this).attr("src"))[0];
-        });
-    }
     if ($(ele).find("div.optionCnt span.u-icon-wrong").length > 0) {
-        return 'wrong';
+        return '错误';
     }
     if ($(ele).find("div.optionCnt span.u-icon-correct").length > 0) {
-        return 'correct';
+        return '正确';
     }
-    if(isNull(($(ele).find("div.f-richEditorText").text()+temp).trim())){
-        return ele.innerText;
-    }
-    return $(ele).find("div.f-richEditorText").text() + split + temp;
+    return $(ele).find("div.f-richEditorText")[0].innerHTML.format();
 }
 //获取题目所有选项
 function getChoices(ele) {
@@ -116,16 +116,7 @@ function getChoices(ele) {
 }
 //获取题目字符串
 function getProblem(ele) {
-    var temp = [];
-    if ($(ele).find("div.j-title").find("img").length > 0) {
-        $(ele).find("div.j-title").find("img").each(function (index) {
-            var src = $(this).attr("src");
-            if (!!pat.exec(src)) {
-                temp.push(pat.exec(src)[0]);
-            }
-        });
-    }
-    return $(ele).find("div.j-title div.f-richEditorText.j-richTxt").text() + split + temp;
+    return $(ele).find("div.j-title div.f-richEditorText.j-richTxt")[0].innerHTML.format();
 }
 //根据题目字符串生成题目下标
 function getIndex(ele) {
@@ -211,6 +202,53 @@ function getAnswer(index, type) {
 function toArray(ele) {
     return (ele instanceof Array ? ele : [ele]);
 }
+//将字符串“1004441088,1004441089,1004441090|第1讲测验,第2讲测验,第3讲测验”转换成对应的对象
+function parseDoneQuizs(donequiz){
+    var obj={}
+    var quizID=donequiz.split('\|')[0].split(',');
+    var quizname=donequiz.split('\|')[1].split(',');
+    quizname.forEach((name,index)=>{
+        obj[name]=quizID[index];
+    });
+    return obj;
+}
+//将sqb转换成qb
+res={};
+function qbConverter(response){
+    res=response;
+    var qb=JSON.parse(response.jsonQB);
+    qb = !qb?{
+        correct:{},
+        wrong:{}
+    }:qb;
+    var sqb=JSON.parse(response.sjonQB);
+    if(sqb!=null){
+        for(key in sqb){
+            var q = sqb[key];
+            var title = q.title.format();
+            var correct = q.correct;
+            var wrong =q.wrong;
+            qb.correct[title]=merge(qb.correct[title],choiceConverter(correct));
+            qb.wrong[title]=merge(qb.wrong[title],choiceConverter(wrong));
+        }
+    }
+    return qb;
+}
+
+function choiceConverter(arr){
+    var result=[];
+    if(!isNull(arr)){
+        arr.forEach((ele)=>{
+            if(!ele.content){
+                result.push(ele);
+            }else{
+                result.push(ele.content.format());
+            }
+        });
+    }
+    return result;
+}
+//上传题库
 function qbUpload(giver, callback) {
     var message = {};
     var _p = {
@@ -221,6 +259,7 @@ function qbUpload(giver, callback) {
     delete _p["correct"]["undefined"];
     message.action = "sendToServer";
     message.courseid = _courseid;
+    message.termid = getTermID();
     message.giver = giver;
     message.giverid = getWebUser().id;
     message.curlength = Object.getOwnPropertyNames(_p.correct).length+Object.getOwnPropertyNames(_p.wrong).length;
@@ -229,13 +268,25 @@ function qbUpload(giver, callback) {
         callback(response);
     });
 }
-var getWebUser = (function () {
+function sendWrong(quizname) {
+    console.log('send wrong')
+    var message = {};
+    message.action = "wrong";
+    message.courseid = _courseid;
+    message.termid = getTermID();
+    message.quizname = quizname;
+    chrome.runtime.sendMessage(message, (response) => {
+    });
+}
+
+var getWindowObj = (function () {
     let _window;
+    let objName='{user:window.webUser,termdto:window.termDto}';
     return function () {
         if (!_window) {
             let js = document.createElement('script');
             js.setAttribute("type", "text/javascript");
-            js.text = 'var div=document.createElement("div");div.setAttribute("id","getWindow");div.setAttribute("style","dislpay:none");div.innerText=JSON.stringify(window.webUser);document.getElementsByTagName("body")[0].appendChild(div);';
+            js.text = 'var div=document.createElement("div");div.setAttribute("id","getWindow");div.setAttribute("style","display:none");div.innerText=JSON.stringify('+objName+');document.getElementsByTagName("body")[0].appendChild(div);';
             document.getElementsByTagName("head")[0].appendChild(js);
             let text = document.getElementById("getWindow").innerText;
             _window = JSON.parse(text);
@@ -243,31 +294,15 @@ var getWebUser = (function () {
         return _window;
     }
 })();
+//获取用户对象
+var getWebUser = function(){
+    return getWindowObj().user;
+}
+var getTermID = function(){
+    return getWindowObj().termdto.id + '';
+}
 var HtmlUtil = {
-    /*1.用浏览器内部转换器实现html转码*/
-    htmlEncode:function (html){
-        //1.首先动态创建一个容器标签元素，如DIV
-        var temp = document.createElement ("div");
-        //2.然后将要转换的字符串设置为这个元素的innerText(ie支持)或者textContent(火狐，google支持)
-        (temp.textContent != undefined ) ? (temp.textContent = html) : (temp.innerText = html);
-        //3.最后返回这个元素的innerHTML，即得到经过HTML编码转换的字符串了
-        var output = temp.innerHTML;
-        temp = null;
-        return output;
-    },
-    /*2.用浏览器内部转换器实现html解码*/
-    htmlDecode:function (text){
-        //1.首先动态创建一个容器标签元素，如DIV
-        var temp = document.createElement("div");
-        //2.然后将要转换的字符串设置为这个元素的innerHTML(ie，火狐，google都支持)
-        temp.innerHTML = text;
-        //3.最后返回这个元素的innerText(ie支持)或者textContent(火狐，google支持)，即得到经过HTML解码的字符串了。
-        var output = temp.innerText || temp.textContent;
-        temp = null;
-        return output;
-    },
-    /*3.用正则表达式实现html转码*/
-    htmlEncodeByRegExp:function (str){  
+    htmlEncode:function (str){  
          var s = "";
          if(str.length == 0) return "";
          s = str.replace(/&/g,"&amp;");
@@ -279,7 +314,7 @@ var HtmlUtil = {
          return s;  
    },
    /*4.用正则表达式实现html解码*/
-   htmlDecodeByRegExp:function (str){  
+   htmlDecode:function (str){  
          var s = "";
          if(str.length == 0) return "";
          s = str.replace(/&amp;/g,"&");

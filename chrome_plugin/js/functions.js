@@ -17,7 +17,7 @@ function domooc() {         //一键做题
             warn(this, 0);       //0表示选择题；
         } else {
             var exist=false;
-            $(this).find("div.j-choicebox ul li").each(function () {
+            $(this).find("div.j-choicebox ul>li").each(function () {
                 if (!!$(this).find("input:checked")[0]) {
                     $(this).find("input:checked")[0].click();
                 }
@@ -55,6 +55,8 @@ function domooc() {         //一键做题
     if (wrongNum===0) {
         alert("finish!");
     } else {
+        var title=$("h2.j-title.f-fl")[0].innerHTML.format();
+        sendWrong(title);
         if(wrongNum>=count1+count2){
             alert("此单元可能还没上传答案，请自行答题或者用小号刷题获取题库！")
         }else{

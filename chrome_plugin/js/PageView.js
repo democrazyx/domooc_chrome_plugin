@@ -26,12 +26,31 @@ var view = (function () {
         });
     };
     obj.showExist = function (current) {
+        if (current == 'unitPage') {
+                $("div.titleBox h4.j-name").each(function () {
+                    var title = $(this)[0].innerText.format();
+                    if (!!p.donequizs[title]) {
+                        $(this).attr("style","color:green");
+                    } else {
+                        $(this).attr("style","color:red");
+                        if($(this).siblings("a.j-quizBtn")[0].innerText.indexOf("作业")==-1){
+                            sendWrong(title);
+                        }
+                    }
+                });
+        }
         $("h2#qb_check_fail").hide();
         if (!$("h4#timestamp")[0] && !$("h4#giver")[0]) {
             if (current === "unitPage") {
                 obj._showExist(selectors[0]);
-            } else {
-                obj._showExist(selectors[1]);
+            } else{
+                var title=$(selectors[1])[0].innerText.format();
+                if(!!p.donequizs[title]){
+                    obj._showExist(selectors[1]);
+                }
+                else{
+                    obj._showNotExist(selectors[1]);
+                }
             }
         } else {
             $("h4#timestamp").show();
@@ -51,8 +70,9 @@ var view = (function () {
             $("#qb_check_fail").show();
         }
     };
-    obj.showButton = function (current) {
-        if (!$("#domooc")[0]) {
+    obj.showButton = function () {
+        var title=$(selectors[1])[0].innerText.format();
+        if (!$("#domooc")[0]&&!!p.donequizs[title]) {
             obj._showButton(selectors[1]);
         } else {
             $("#domooc").show();
@@ -74,8 +94,13 @@ var view = (function () {
             $("div#giver_submit").click(function () {
                 var giver = $("textarea#giver_text").val().slice(0,120);
                 qbUpload(giver, function (response) {
-                    if (!response || !response.success) {
-                        $("div#upload span").text(details[2]);      //上传失败
+                    if (!response || !response.success) {   //上传失败
+                        if(!response){
+                            $("div#upload span").text(details[2]);
+                        }
+                        if(!!response&&!!response.error){
+                            $("div#upload span").text("上传失败！"+response.error);
+                        }
                         $("div#upload span").css("color", "red");   
                     } else {
                         $("div#upload span").text(details[3]);      //上传成功

@@ -19,9 +19,9 @@ var processor = (function () {
             if (state.qbchecked) {
                 view.showExist(current);
                 if (["doingPage", "donePage"].indexOf(current) > -1) {
-                    view.showButton();
+                    view.showButton(current);
                 } else {
-                    view.hideButton();
+                    view.hideButton(current);
                 }
             } else {
                 view.showNotExist(current);
