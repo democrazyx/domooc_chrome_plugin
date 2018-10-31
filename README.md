@@ -1,42 +1,35 @@
-# domooc_chrome_plugin
-finish your mooc homework by only clicking one button
-# 1.使用说明
+# mooc作业一键答题插件
+>## 1. 安装插件
+>首先你的电脑上需要安装支持离线安装chrome插件的浏览器，然后下载domooc.crx文件，双击安装即可。
+>
+>这里推荐使用 [**360极速浏览器**](https://browser.360.cn/ee/) ，因为最新版的谷歌chrome浏览器已经不再支持安装本地插件。
+>
+>当电脑上安装有360极速浏览器时，双击.crx插件后会出现下图所示对话框：
+>
+>![安装](安装.png)
+>
+>点击添加即可。
 
->1. 首先电脑上需要有支持本地安装chrome插件的浏览器（推荐使用360极速浏览器）
->2. 下载.crx文件，然后双击安装
+>## 2. 使用插件
+>当你安装好插件后，如果浏览器右上角出现一个图标![图标](https://github.com/Demcorazy/homework/blob/master/images/domooc16.png)，就说明插件已经可以使用了。
+>
+>这时任意打开一个课程，例如[自动控制原理](https://www.icourse163.org/learn/HUST-1001531001)，选择如下图所示的测验与作业
+>
+>![测验与作业](https://github.com/Demcorazy/homework/blob/master/images/测验与作业.png)
+>
+>稍等几秒，就会出现如下图所示的结果
+>
+>![测验与作业](https://github.com/Demcorazy/homework/blob/master/images/测验与作业2.png)
+>
+>这就表明插件已经成功获取了本课程当前的题库，其中：<br>
+><span style="color:green">测验的标题被标记为绿色表示基本获取了全部题目答案</span><br>
+><span style="color:red">被标记为红色则表示还没有获取题目答案。</span>
+>
+>开始测验之后，在答题页面顶部会出现如下图所示的按钮，
+>![一键答题](https://github.com/Demcorazy/homework/blob/master/images/一键答题.png)<br>
+>
+>点击 ![一键答题](button.png) 即可自动选择所有正确答案。
 
->完成以上步骤后，进入mooc网站的某个课程的测验界面，
-
->例如 https://www.icourse163.org/learn/XIYOU-1002578005?tid=1002984001#/learn/testlist
-
->若显示
-
->![对应题库信息](https://github.com/Demcorazy/homework/blob/master/images/exist.png)
-
->则说明安装成功，可以使用。
-
->若显示
-
->![暂无对应题库](https://github.com/Demcorazy/homework/blob/master/images/NotExist.png)
-
->请检查您的浏览器设置，是否允许本插件联网 （如果你不是选择的上面的课程，则可能你选择的课程还暂时没有题库）。
-
->若什么都没有显示，则并没有安装成功。请检查您的浏览器插件是否启用，以及浏览器版本是否过低。
-
-# 2.如果课程还没有题库该怎么办
-
-> 您可以自行登录一个小号，然后在答题页面使用插件按钮的刷题功能
-
-> 点击浏览器domooc插件按钮可看到![按钮弹出页面](https://github.com/Demcorazy/homework/blob/master/images/popuphtml.png)
-
-> ## 注意
-
->> _课程刷题_ 需要在测验与作业页面使用 ![测验与作业](https://github.com/Demcorazy/homework/blob/master/images/testlist.png)
- 
->> _单元刷题_ 需要在每一单元的测验与作业页面使用 ![单元测验](https://github.com/Demcorazy/homework/blob/master/images/unitlist.png)
- 
- # 3.注意事项
- 
- > ### _本插件题库由同学们自发分享，不保证准确性。_
- 
-  > ### _此外，作业可以不做，但是该学的东西一定要掌握_
+# 3.bug提交
+如果安装插件之后并没有出现如上所述的结果，则可能是程序出了bug，请在项目的[github主页](https://github.com/Demcorazy/domooc_chrome_plugin)反馈bug，或者使用邮件联系。
+## Email : asherious@foxmail.com
