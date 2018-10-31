@@ -6,7 +6,7 @@
 >
 >当电脑上安装有360极速浏览器时，双击.crx插件后会出现下图所示对话框：
 >
->![安装](安装.png)
+>![安装](https://github.com/Demcorazy/homework/blob/master/images/安装.png)
 >
 >点击添加即可。
 
