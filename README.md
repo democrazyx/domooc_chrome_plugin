@@ -1,4 +1,5 @@
 # mooc作业一键答题插件
+##  已通过油猴脚本重写,[**新版安装地址**](https://greasyfork.org/zh-CN/scripts/396410-domooc) 
 >## 1. 安装插件
 >首先你的电脑上需要安装支持离线安装chrome插件的浏览器，然后下载domooc.crx文件，双击安装即可。
 >
